@@ -104,4 +104,4 @@ dist
 .tern-port
 
 # MySQL DB Password
-./web/dbpw.txt
+web/dbpw.txt

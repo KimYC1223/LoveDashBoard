@@ -1,9 +1,13 @@
-var mysql      = require('mysql')
+var mysql       = require('mysql')
 let queryString = require('querystring')
-var connection = mysql.createConnection({
+let fs          = require('fs')
+
+let dbpw        = fs.readFileSync('dbpw.txt','utf8')
+
+var connection  = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : '',
+  password : dbpw.trim(),
   port     : 3306,
   database : 'love_dash_board'
 });
