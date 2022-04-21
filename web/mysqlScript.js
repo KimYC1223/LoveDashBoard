@@ -12,16 +12,24 @@ var connection  = mysql.createConnection({
   database : 'love_dash_board'
 });
 
-let dateParse = (timestamp) => {
-  let year = timestamp.getFullYear(); // 년도
-  let month = timestamp.getMonth() + 1;  // 월
-  let date = timestamp.getDate();  // 날짜
-  let hours = timestamp.getHours(); // 시
-  let minutes = timestamp.getMinutes();  // 분
-  let seconds = timestamp.getSeconds();  // 초
+let datetimeParse = (timestamp) => {
+  let year = timestamp.getFullYear();       // 년도
+  let month = timestamp.getMonth() + 1;     // 월
+  let date = timestamp.getDate();           // 날짜
+  let hours = timestamp.getHours();         // 시
+  let minutes = timestamp.getMinutes();     // 분
+  let seconds = timestamp.getSeconds();     // 초
 
   return `${year}-${parseInt(month/10)}${month%10}-${parseInt(date/10)}${date%10} `+
          `${parseInt(hours/10)}${hours%10}:${parseInt(minutes/10)}${minutes%10}:${parseInt(seconds/10)}${seconds%10}`
+}
+
+let dateParse = (timestamp) => {
+  let year = timestamp.getFullYear();       // 년도
+  let month = timestamp.getMonth() + 1;     // 월
+  let date = timestamp.getDate();           // 날짜
+
+  return `${year}-${parseInt(month/10)}${month%10}-${parseInt(date/10)}${date%10}`
 }
 
 
@@ -31,110 +39,46 @@ module.exports = (function() {
     //=====================================================================================================================================
     //
     //  USER TABLE CRUD (Create, Read, Update, Delete)
-    //  @ 2020.11.22 KimYC1223
+    //  @ 2022.04.18 KimYC1223
     /*
-        +-------------------+----------+------+-----+---------+----------------+
-        | Field             | Type     | Null | Key | Default | Extra          |
-        +-------------------+----------+------+-----+---------+----------------+
-        | id                | int(11)  | NO   | PRI | NULL    | auto_increment |
-        | name              | char(10) | YES  |     | NULL    |                |
-        | moa_band_name     | char(30) | YES  |     | NULL    |                |
-        | item_0            | int(11)  | YES  |     | NULL    |                |
-        | item_1            | int(11)  | YES  |     | NULL    |                |
-        | item_2            | int(11)  | YES  |     | NULL    |                |
-        | item_3            | int(11)  | YES  |     | NULL    |                |
-        | item_4            | int(11)  | YES  |     | NULL    |                |
-        | morning_call_time | time     | YES  |     | NULL    |                |
-        | breakfast_time    | time     | YES  |     | NULL    |                |
-        | lunch_time        | time     | YES  |     | NULL    |                |
-        | dinner_time       | time     | YES  |     | NULL    |                |
-        | school_time       | time     | YES  |     | NULL    |                |
-        | home_time         | time     | YES  |     | NULL    |                |
-        | water_skip        | time     | YES  |     | NULL    |                |
-        | drink_skip        | time     | YES  |     | NULL    |                |
-        | pee_skip          | time     | YES  |     | NULL    |                |
-        | poop_skip         | time     | YES  |     | NULL    |                |
-        | font_family       | char(20) | YES  |     | NULL    |                |
-        | font_size         | int(11)  | YES  |     | NULL    |                |
-        | creation_date     | datetime | YES  |     | NULL    |                |
-        +-------------------+----------+------+-----+---------+----------------+
-    */
-    //
-    //=====================================================================================================================================
-    //  ▶ create_users
-    //=====================================================================================================================================
-    //=====================================================================================================================================
-    //
-    //  USER TABLE CRUD (Create, Read, Update, Delete)
-    //  @ 2020.11.22 KimYC1223
-    /*
-        +-------------------+----------+------+-----+---------+----------------+
-        | Field             | Type     | Null | Key | Default | Extra          |
-        +-------------------+----------+------+-----+---------+----------------+
-        | id                | int(11)  | NO   | PRI | NULL    | auto_increment |
-        | name              | char(10) | YES  |     | NULL    |                |
-        | moa_band_name     | char(30) | YES  |     | NULL    |                |
-        | item_0            | int(11)  | YES  |     | NULL    |                |
-        | item_1            | int(11)  | YES  |     | NULL    |                |
-        | item_2            | int(11)  | YES  |     | NULL    |                |
-        | item_3            | int(11)  | YES  |     | NULL    |                |
-        | item_4            | int(11)  | YES  |     | NULL    |                |
-        | morning_call_time | time     | YES  |     | NULL    |                |
-        | breakfast_time    | time     | YES  |     | NULL    |                |
-        | lunch_time        | time     | YES  |     | NULL    |                |
-        | dinner_time       | time     | YES  |     | NULL    |                |
-        | school_time       | time     | YES  |     | NULL    |                |
-        | home_time         | time     | YES  |     | NULL    |                |
-        | water_skip        | time     | YES  |     | NULL    |                |
-        | drink_skip        | time     | YES  |     | NULL    |                |
-        | pee_skip          | time     | YES  |     | NULL    |                |
-        | poop_skip         | time     | YES  |     | NULL    |                |
-        | font_family       | char(20) | YES  |     | NULL    |                |
-        | font_size         | int(11)  | YES  |     | NULL    |                |
-        | creation_date     | datetime | YES  |     | NULL    |                |
-        | birthday          | datetime | YES  |     | NULL    |                |
-        | gender            | char(8)  | YES  |     | NULL    |                |
-        | periode           | int(11)  | YES  |     | NULL    |                |
-        +-------------------+----------+------+-----+---------+----------------+
+        +---------------+------------+------+-----+---------+----------------+
+        | Field         | Type       | Null | Key | Default | Extra          |
+        +---------------+------------+------+-----+---------+----------------+
+        | id_num        | int(11)    | NO   | PRI | NULL    | auto_increment |
+        | id            | char(50)   | YES  |     | NULL    |                |
+        | pw            | text       | YES  |     | NULL    |                |
+        | name          | char(20)   | YES  |     | NULL    |                |
+        | gender        | char(20)   | YES  |     | NULL    |                |
+        | birth         | date       | YES  |     | NULL    |                |
+        | creation_date | date       | YES  |     | NULL    |                |
+        | email         | char(255)  | YES  |     | NULL    |                |
+        | auth_num      | int(11)    | YES  |     | NULL    |                |
+        | is_auth       | tinyint(1) | NO   |     | NULL    |                |
+        | couple_num    | int(11)    | YES  |     | NULL    |                |
+        | title         | int(11)    | YES  |     | NULL    |                |
+        +---------------+------------+------+-----+---------+----------------+
     */
     //
     //=====================================================================================================================================
     //  ▶ create_users
     //=====================================================================================================================================
     create_users: function (req,res) {
+      let id = req.query.id
+      let pw = req.query.pw
       let name = req.query.name
-      let moa_band_name = req.query.moa_band_name
-      let item_0 = req.query.item_0
-      let item_1 = req.query.item_1
-      let item_2 = req.query.item_2
-      let item_3 = req.query.item_3
-      let item_4 = req.query.item_4
-      let morning_call_time = req.query.morning_call_time
-      let breakfast_time = req.query.breakfast_time
-      let lunch_time = req.query.lunch_time
-      let dinner_time = req.query.dinner_time
-      let school_time = req.query.school_time
-      let home_time = req.query.home_time
-      let water_skip = req.query.water_skip
-      let drink_skip = req.query.drink_skip
-      let pee_skip = req.query.pee_skip
-      let poop_skip = req.query.poop_skip
-      let font_family = req.query.font_family
-      let font_size = req.query.font_size
-      let creation_date = req.query.creation_date
-      let birthday = req.query.birthday
       let gender = req.query.gender
-      let periode = req.query.periode
-      let queryString = 'INSERT INTO users (name,moa_band_name,item_0,item_1,item_2,item_3,item_4,morning_call_time,'
-              + 'breakfast_time,lunch_time,dinner_time,school_time,home_time,'
-              + 'water_skip,drink_skip,pee_skip,poop_skip,font_family,font_size,creation_date,birthday,gender,periode)'
-              + `VALUES ("${name}","${moa_band_name}",${item_0},${item_1},${item_2},${item_3},${item_4},"${morning_call_time}",`
-              + `"${breakfast_time}","${lunch_time}","${dinner_time}","${school_time}","${home_time}",`
-              + `"${water_skip}","${drink_skip}","${pee_skip}","${poop_skip}","${font_family}",${font_size},"${creation_date}",`
-              + `"${birthday} 00:00:00","${gender}",${periode});`
+      let birth = req.query.birth
+      let creation_date = req.query.creation_date
+      let email = req.query.email
+      let auth_num = Math.floor(Math.random() * 1001);
+      let title = req.query.title
+      let queryString = 'INSERT INTO users (id,pw,name,gender,birth,creation_date,email,'
+              + 'auth_num,is_auth,couple_num,couple_num,title) '
+              + `VALUES ("${id}","${pw}","${name}","${gender}","${birth}","${creation_date}",`
+              + `"${email}",${auth_num},0,-1,0);`
       connection.query(queryString, function(error,rows, fields) {
         if(error) {console.log(error); res.write(error); res.end(); return;}
-        connection.query(`SELECT id FROM users WHERE name = "${name}";`, function(error2,rows2,fields2) {
+        connection.query(`SELECT id_num FROM users WHERE id = "${id}";`, function(error2,rows2,fields2) {
           if(error2) {console.log(error2); res.write(error2); res.end(); return;}
           console.log(rows2[rows2.length - 1].id)
           res.write(`${rows2[rows2.length - 1].id}`);
@@ -149,12 +93,12 @@ module.exports = (function() {
     //=====================================================================================================================================
     read_users: function (req,res) {
       let id = req.query.id
-      let searchName = req.query.searchName
+      let id_num = req.query.id_num
       let queryString = `SELECT * FROM users WHERE id = '${id}';`
       if(id == null) {
         if(searchName == null)
           queryString = `SELECT * FROM users;`
-        else queryString = `SELECT * FROM users WHERE name = '${searchName}';`
+        else queryString = `SELECT * FROM users WHERE id_num = '${id_num}';`
       }
       connection.query(queryString, function(error,rows, fields) {
         res.writeHead(200,{'Content-Type':'text/plain;charset=utf-8'})
@@ -164,33 +108,21 @@ module.exports = (function() {
           return;
         }
         try{
-          let str = `{\n\t"UserLogs" : [\n`
+          let str = `{\n\t"users" : [\n`
           for(var i = 0; i < rows.length; i ++) {
             str +=' {\n'
-            str += `\t"id" : ${rows[i].id},\n`
+            str += `\t"id_num" : ${rows[i].id_num},\n`
+            str += `\t"id" : "${rows[i].id}",\n`
+            str += `\t"pw" : "${rows[i].pw}",\n`
             str += `\t"name" : "${rows[i].name}",\n`
-            str += `\t"moa_band_name" : "${rows[i].moa_band_name}",\n`
-            str += `\t"item_0" : ${rows[i].item_0},\n`
-            str += `\t"item_1" : ${rows[i].item_1},\n`
-            str += `\t"item_2" : ${rows[i].item_2},\n`
-            str += `\t"item_3" : ${rows[i].item_3},\n`
-            str += `\t"item_4" : ${rows[i].item_4},\n`
-            str += `\t"morning_call_time" : "${rows[i].morning_call_time}",\n`
-            str += `\t"breakfast_time" : "${rows[i].breakfast_time}",\n`
-            str += `\t"lunch_time" : "${rows[i].lunch_time}",\n`
-            str += `\t"dinner_time" : "${rows[i].dinner_time}",\n`
-            str += `\t"school_time" : "${rows[i].school_time}",\n`
-            str += `\t"home_time" : "${rows[i].home_time}",\n`
-            str += `\t"water_skip" : "${rows[i].water_skip}",\n`
-            str += `\t"drink_skip" : "${rows[i].drink_skip}",\n`
-            str += `\t"pee_skip" : "${rows[i].pee_skip}",\n`
-            str += `\t"poop_skip" : "${rows[i].poop_skip}",\n`
-            str += `\t"font_family" : "${rows[i].font_family}",\n`
-            str += `\t"font_size" : ${rows[i].font_size},\n`
-            str += `\t"creation_date" : "${dateParse(rows[i].creation_date)}",\n`
-            str += `\t"birthday" : "${dateParse(rows[i].birthday)}",\n`
             str += `\t"gender" : "${rows[i].gender}",\n`
-            str += `\t"periode" : ${rows[i].periode}\n}`
+            str += `\t"birth" : "${dateParse(rows[i].birth)})",\n`
+            str += `\t"creation_date" : "${dateParse(rows[i].creation_date)}",\n`
+            str += `\t"email" : "${rows[i].email}",\n`
+            str += `\t"auth_num" : ${rows[i].auth_num},\n`
+            str += `\t"is_auth" : ${rows[i].is_auth},\n`
+            str += `\t"couple_num" : ${rows[i].couple_num},\n`
+            str += `\t"title" : ${rows[i].title}\n}`
             if(i != (rows.length-1))
               str += ', '
           }
@@ -206,38 +138,19 @@ module.exports = (function() {
     //  ▶ update_users
     //=====================================================================================================================================
     update_users: function (req,res) {
-      let id = req.query.id
-      if(id == null){
-        res.write('error')
-        res.end();
-        return;
-      }
+      let id_num = req.query.id_num
+      if(id_num == null){ res.write('error'); res.end(); return; }
       let arr = []
       let arrStr = ``
-      if(req.query.name != null) { arr.push(`name = "${req.query.name}"`) }
-      if(req.query.moa_band_name != null) { arr.push(`moa_band_name = "${req.query.moa_band_name}"`) }
-      if(req.query.item_0 != null) { arr.push(`item_0 = ${req.query.item_0}`) }
-      if(req.query.item_1 != null) { arr.push(`item_1 = ${req.query.item_1}`) }
-      if(req.query.item_2 != null) { arr.push(`item_2 = ${req.query.item_2}`) }
-      if(req.query.item_3 != null) { arr.push(`item_3 = ${req.query.item_3}`) }
-      if(req.query.item_4 != null) { arr.push(`item_4 = ${req.query.item_4}`) }
-      if(req.query.morning_call_time != null) { arr.push(`morning_call_time = "${req.query.morning_call_time}"`) }
-      if(req.query.breakfast_time != null) { arr.push(`breakfast_time = "${req.query.breakfast_time}"`) }
-      if(req.query.lunch_time != null) { arr.push(`lunch_time = "${req.query.lunch_time}"`) }
-      if(req.query.dinner_time != null) { arr.push(`dinner_time = "${req.query.dinner_time}"`) }
-      if(req.query.school_time != null) { arr.push(`school_time = "${req.query.school_time}"`) }
-      if(req.query.home_time != null) { arr.push(`home_time = "${req.query.home_time}"`) }
-      if(req.query.water_skip != null) { arr.push(`water_skip = "${req.query.water_skip}"`) }
-      if(req.query.drink_skip != null) { arr.push(`drink_skip = "${req.query.drink_skip}"`) }
-      if(req.query.pee_skip != null) { arr.push(`pee_skip = "${req.query.pee_skip}"`) }
-      if(req.query.poop_skip != null) { arr.push(`poop_skip = "${req.query.poop_skip}"`) }
-      if(req.query.poop_skip != null) { arr.push(`poop_skip = "${req.query.poop_skip}"`) }
-      if(req.query.font_family != null) { arr.push(`font_family = "${req.query.font_family}"`) }
-      if(req.query.font_size != null) { arr.push(`font_size = ${req.query.font_size}`) }
-      if(req.query.creation_date != null) { arr.push(`creation_date = "${req.query.creation_date}"`) }
-      if(req.query.birthday != null) { arr.push(`birthday = "${req.query.birthday} 00:00:00"`) }
-      if(req.query.gender != null) { arr.push(`gender = "${req.query.gender}"`) }
-      if(req.query.periode != null) { arr.push(`periode = "${req.query.periode}"`) }
+      if(req.query.pw != null) { arr.push(`pw = "${req.query.moa_band_name}"`) }
+      if(req.query.name != null) { arr.push(`name = "${req.query.item_0}"`) }
+      if(req.query.gender != null) { arr.push(`gender = "${req.query.item_1}"`) }
+      if(req.query.birth != null) { arr.push(`birth = "${req.query.item_2}"`) }
+      if(req.query.creation_date != null) { arr.push(`creation_date = "${req.query.item_3}"`) }
+      if(req.query.email != null) { arr.push(`email = "${req.query.item_4}"`) }
+      if(req.query.is_auth != null) { arr.push(`is_auth = ${req.query.breakfast_time}`) }
+      if(req.query.couple_num != null) { arr.push(`couple_num = ${req.query.lunch_time}`) }
+      if(req.query.title != null) { arr.push(`title = ${req.query.dinner_time}`) }
       if(arr.length == 0){ res.write('error'); res.end(); return; }
 
       for(let i = 0; i < arr.length; i++) {
@@ -245,7 +158,7 @@ module.exports = (function() {
         if( i != arr.length-1) {arrStr += ',';}
       }
 
-      let queryString = `UPDATE users SET ${arrStr} WHERE id = ${id};`
+      let queryString = `UPDATE users SET ${arrStr} WHERE id_num = ${id_num};`
       connection.query(queryString, function(error,rows, fields) {
         if(error) {console.log(error); res.write(error); res.end(); return;}
         res.write(`1`);
@@ -258,13 +171,515 @@ module.exports = (function() {
     //  ▶ delete_users
     //=====================================================================================================================================
     delete_users: function (req,res) {
-      let id = req.query.id
-      let queryString = `DELETE FROM users WHERE id = '${id}';`
-      if(id == null) {
-        res.write('null')
+      let id_num = req.query.id_num
+      let queryString = `DELETE FROM users WHERE id_num = '${id_num}';`
+      if(id_num == null){ res.write('error'); res.end(); return; }
+      connection.query(queryString, function(error,rows, fields) {
+        res.writeHead(200,{'Content-Type':'text/plain;charset=utf-8'})
+        if(error) {console.log(error); res.write(error); res.end(); return;}
+        res.write(`1`); res.end(); return;
+      });
+      return;
+    },
+
+
+    //=====================================================================================================================================
+    //
+    //  ACHIEVEMENT TABLE CRUD (Create, Read, Update, Delete)
+    //  @ 2022.04.18 KimYC1223
+    /*
+        +-----------------+---------+------+-----+---------+----------------+
+        | Field           | Type    | Null | Key | Default | Extra          |
+        +-----------------+---------+------+-----+---------+----------------+
+        | achievement_num | int(11) | NO   | PRI | NULL    | auto_increment |
+        | owner           | int(11) | YES  |     | NULL    |                |
+        | creation_date   | date    | YES  |     | NULL    |                |
+        +-----------------+---------+------+-----+---------+----------------+
+    */
+    //
+    //=====================================================================================================================================
+    //  ▶ create_achievement
+    //=====================================================================================================================================
+    create_achievement: function (req,res) {
+      let owner = req.query.owner
+      let creation_date = req.query.creation_date
+      let queryString = 'INSERT INTO achievement (owner,creation_date)'
+              + `VALUES ("${owner}","${creation_date}");`
+      connection.query(queryString, function(error,rows, fields) {
+        if(error) {console.log(error); res.write(error); res.end(); return;}
+        connection.query(`SELECT achievement_num FROM achievement WHERE owner = "${owner}";`, function(error2,rows2,fields2) {
+          if(error2) {console.log(error2); res.write(error2); res.end(); return;}
+          console.log(rows2[rows2.length - 1].id)
+          res.write(`${rows2[rows2.length - 1].id}`);
+          res.end();
+        })
+      });
+      return;
+    },
+
+    //=====================================================================================================================================
+    //  ▶ read_achievement
+    //=====================================================================================================================================
+    read_achievement: function (req,res) {
+      let id_num = req.query.id_num
+      if(id_num == null){ res.write('error'); res.end(); return; }
+      let queryString = `SELECT * FROM achievement WHERE id_num = '${id_num}';`
+      connection.query(queryString, function(error,rows, fields) {
+        res.writeHead(200,{'Content-Type':'text/plain;charset=utf-8'})
+        if(rows.length == 0) { res.write('null'); res.end(); return; }
+        try{
+          let str = `{\n\t"achievement" : [\n`
+          for(var i = 0; i < rows.length; i ++) {
+            str +=' {\n'
+            str += `\t"achievement_num" : ${rows[i].id_num},\n`
+            str += `\t"owner" : "${rows[i].id}",\n`
+            str += `\t"creation_date" : "${dateParse(rows[i].pw)}"\n}`
+            if(i != (rows.length-1))
+              str += ', '
+          }
+          str += '\n\t]\n}'
+          res.write(str)
+        } catch (e) {res.write('null')}
         res.end();
-        return;
+      });
+      return;
+    },
+
+    //=====================================================================================================================================
+    //  ▶ update_achievement
+    //=====================================================================================================================================
+    update_achievement: function (req,res) {
+      let id_num = req.query.id_num
+      if(id_num == null){ res.write('error'); res.end(); return; }
+      let arr = []
+      let arrStr = ``
+      if(req.query.owner != null) { arr.push(`owner = "${req.query.owner}"`) }
+      if(req.query.creation_date != null) { arr.push(`creation_date = "${dateParse(req.query.creation_date)}"`) }
+      if(arr.length == 0){ res.write('error'); res.end(); return; }
+
+      for(let i = 0; i < arr.length; i++) {
+        arrStr += arr[i];
+        if( i != arr.length-1) {arrStr += ',';}
       }
+
+      let queryString = `UPDATE achievement SET ${arrStr} WHERE id_num = ${id_num};`
+      connection.query(queryString, function(error,rows, fields) {
+        if(error) {console.log(error); res.write(error); res.end(); return;}
+        res.write(`1`);
+        res.end();
+      });
+      return;
+    },
+
+    //=====================================================================================================================================
+    //  ▶ delete_achievement
+    //=====================================================================================================================================
+    delete_achievement: function (req,res) {
+      let id_num = req.query.id_num
+      let queryString = `DELETE FROM achievement WHERE id_num = '${id_num}';`
+      if(id_num == null){ res.write('error'); res.end(); return; }
+      connection.query(queryString, function(error,rows, fields) {
+        res.writeHead(200,{'Content-Type':'text/plain;charset=utf-8'})
+        if(error) {console.log(error); res.write(error); res.end(); return;}
+        res.write(`1`); res.end(); return;
+      });
+      return;
+    },
+
+
+    //=====================================================================================================================================
+    //
+    //  TITLE TABLE CRUD (Create, Read, Update, Delete)
+    //  @ 2022.04.18 KimYC1223
+    /*
+        +---------------+---------+------+-----+---------+----------------+
+        | Field         | Type    | Null | Key | Default | Extra          |
+        +---------------+---------+------+-----+---------+----------------+
+        | title_num     | int(11) | NO   | PRI | NULL    | auto_increment |
+        | owner         | int(11) | YES  |     | NULL    |                |
+        | creation_date | date    | YES  |     | NULL    |                |
+        +---------------+---------+------+-----+---------+----------------+
+    */
+    //
+    //=====================================================================================================================================
+    //  ▶ create_title
+    //=====================================================================================================================================
+    create_title: function (req,res) {
+      let owner = req.query.owner
+      let creation_date = req.query.creation_date
+      let queryString = 'INSERT INTO title (owner,creation_date)'
+              + `VALUES ("${owner}","${creation_date}");`
+      connection.query(queryString, function(error,rows, fields) {
+        if(error) {console.log(error); res.write(error); res.end(); return;}
+        connection.query(`SELECT title_num FROM title WHERE owner = "${owner}";`, function(error2,rows2,fields2) {
+          if(error2) {console.log(error2); res.write(error2); res.end(); return;}
+          console.log(rows2[rows2.length - 1].id)
+          res.write(`${rows2[rows2.length - 1].id}`);
+          res.end();
+        })
+      });
+      return;
+    },
+
+    //=====================================================================================================================================
+    //  ▶ read_title
+    //=====================================================================================================================================
+    read_title: function (req,res) {
+      let id_num = req.query.id_num
+      if(id_num == null){ res.write('error'); res.end(); return; }
+      let queryString = `SELECT * FROM title WHERE id_num = '${id_num}';`
+      connection.query(queryString, function(error,rows, fields) {
+        res.writeHead(200,{'Content-Type':'text/plain;charset=utf-8'})
+        if(rows.length == 0) { res.write('null'); res.end(); return; }
+        try{
+          let str = `{\n\t"title" : [\n`
+          for(var i = 0; i < rows.length; i ++) {
+            str +=' {\n'
+            str += `\t"title_num" : ${rows[i].id_num},\n`
+            str += `\t"owner" : "${rows[i].id}",\n`
+            str += `\t"creation_date" : "${dateParse(rows[i].pw)}"\n}`
+            if(i != (rows.length-1))
+              str += ', '
+          }
+          str += '\n\t]\n}'
+          res.write(str)
+        } catch (e) {res.write('null')}
+        res.end();
+      });
+      return;
+    },
+
+    //=====================================================================================================================================
+    //  ▶ update_title
+    //=====================================================================================================================================
+    update_title: function (req,res) {
+      let id_num = req.query.id_num
+      if(id_num == null){ res.write('error'); res.end(); return; }
+      let arr = []
+      let arrStr = ``
+      if(req.query.owner != null) { arr.push(`owner = "${req.query.owner}"`) }
+      if(req.query.creation_date != null) { arr.push(`creation_date = "${dateParse(req.query.creation_date)}"`) }
+      if(arr.length == 0){ res.write('error'); res.end(); return; }
+
+      for(let i = 0; i < arr.length; i++) {
+        arrStr += arr[i];
+        if( i != arr.length-1) {arrStr += ',';}
+      }
+
+      let queryString = `UPDATE title SET ${arrStr} WHERE id_num = ${id_num};`
+      connection.query(queryString, function(error,rows, fields) {
+        if(error) {console.log(error); res.write(error); res.end(); return;}
+        res.write(`1`);
+        res.end();
+      });
+      return;
+    },
+
+    //=====================================================================================================================================
+    //  ▶ delete_title
+    //=====================================================================================================================================
+    delete_title: function (req,res) {
+      let id_num = req.query.id_num
+      let queryString = `DELETE FROM title WHERE id_num = '${id_num}';`
+      if(id_num == null){ res.write('error'); res.end(); return; }
+      connection.query(queryString, function(error,rows, fields) {
+        res.writeHead(200,{'Content-Type':'text/plain;charset=utf-8'})
+        if(error) {console.log(error); res.write(error); res.end(); return;}
+        res.write(`1`); res.end(); return;
+      });
+      return;
+    },
+
+
+    
+    //=====================================================================================================================================
+    //
+    //  COUPON TABLE CRUD (Create, Read, Update, Delete)
+    //  @ 2022.04.18 KimYC1223
+    /*
+        +---------------+----------+------+-----+---------+----------------+
+        | Field         | Type     | Null | Key | Default | Extra          |
+        +---------------+----------+------+-----+---------+----------------+
+        | coupon_id     | int(11)  | NO   | PRI | NULL    | auto_increment |
+        | couple_num    | int(11)  | YES  |     | NULL    |                |
+        | name          | char(50) | YES  |     | NULL    |                |
+        | reason        | text     | YES  |     | NULL    |                |
+        | creation_date | date     | YES  |     | NULL    |                |
+        | author_id     | int(11)  | YES  |     | NULL    |                |
+        | author_name   | char(20) | YES  |     | NULL    |                |
+        | taker_id      | int(11)  | YES  |     | NULL    |                |
+        | taker_name    | char(20) | YES  |     | NULL    |                |
+        | icon          | int(11)  | YES  |     | NULL    |                |
+        | picture       | text     | YES  |     | NULL    |                |
+        +---------------+----------+------+-----+---------+----------------+
+    */
+    //
+    //=====================================================================================================================================
+    //  ▶ create_coupon
+    //=====================================================================================================================================
+    create_coupon: function (req,res) {
+      let couple_num = req.query.couple_num
+      let name = req.query.name
+      let reason = req.query.reason
+      let creation_date = req.query.creation_date
+      let author_id = req.query.author_id
+      let author_name = req.query.author_name
+      let taker_id = req.query.taker_id
+      let taker_name = req.query.taker_name
+      let icon = req.query.icon
+      let picture = req.query.picture
+      let queryString = `INSERT INTO coupon (couple_num,name,reason,creation_date,author_id,author_name,`
+              + `taker_id,taker_name,icon,picture) `
+              + `VALUES (${couple_num},"${name}","${reason}","${dateParse(creation_date)}",${author_id},"${author_name}",'`
+              + `${taker_id},"${taker_name}",${icon},"${picture}"); `
+      connection.query(queryString, function(error,rows, fields) {
+        if(error) {console.log(error); res.write(error); res.end(); return;}
+        connection.query(`SELECT coupon_id FROM coupon WHERE author_id = "${author_id}" AND ` +
+                         `taker_id = "${taker_id}";`, function(error2,rows2,fields2) {
+          if(error2) {console.log(error2); res.write(error2); res.end(); return;}
+          console.log(rows2[rows2.length - 1].id)
+          res.write(`${rows2[rows2.length - 1].id}`);
+          res.end();
+        })
+      });
+      return;
+    },
+
+    //=====================================================================================================================================
+    //  ▶ read_coupon
+    //=====================================================================================================================================
+    read_coupon: function (req,res) {
+      let id_num = req.query.id_num
+      if(id_num == null){ res.write('error'); res.end(); return; }
+      let queryString = `SELECT * FROM coupon WHERE id_num = '${id_num}';`
+      connection.query(queryString, function(error,rows, fields) {
+        res.writeHead(200,{'Content-Type':'text/plain;charset=utf-8'})
+        if(rows.length == 0) { res.write('null'); res.end(); return; }
+        try{
+          let str = `{\n\t"coupon" : [\n`
+          for(var i = 0; i < rows.length; i ++) {
+            str +=' {\n'
+            str += `\t"coupon_id" : ${rows[i].id_num},\n`
+            str += `\t"coupon_num" : ${rows[i].coupon_num},\n`
+            str += `\t"name" : "${rows[i].name}",\n`
+            str += `\t"reason" : "${rows[i].reason}",\n`
+            str += `\t"creation_date" : "${dateParse(rows[i].pw)}",\n`
+            str += `\t"author_id" : ${rows[i].author_id},\n`
+            str += `\t"author_name" : "${rows[i].author_name}",\n`
+            str += `\t"taker_id" : ${rows[i].taker_id},\n`
+            str += `\t"taker_name" : "${rows[i].taker_name}",\n`
+            str += `\t"icon" : ${rows[i].icon},\n`
+            str += `\t"picture" : "${rows[i].picture}"\n}`
+            if(i != (rows.length-1))
+              str += ', '
+          }
+          str += '\n\t]\n}'
+          res.write(str)
+        } catch (e) {res.write('null')}
+        res.end();
+      });
+      return;
+    },
+
+    //=====================================================================================================================================
+    //  ▶ update_coupon
+    //=====================================================================================================================================
+    update_coupon: function (req,res) {
+      let coupon_id = req.query.coupon_id
+      if(coupon_id == null){ res.write('error'); res.end(); return; }
+      let arr = []
+      let arrStr = ``
+      if(req.query.couple_num != null) { arr.push(`couple_num = ${req.query.couple_num}`) }
+      if(req.query.name != null) { arr.push(`name = "${req.query.name}"`) }
+      if(req.query.reason != null) { arr.push(`reason = "${req.query.reason}"`) }
+      if(req.query.creation_date != null) { arr.push(`creation_date = "${dateParse(req.query.creation_date)}"`) }
+      if(req.query.author_id != null) { arr.push(`author_id = ${req.query.author_id}`) }
+      if(req.query.author_name != null) { arr.push(`author_name = "${req.query.author_name}"`) }
+      if(req.query.taker_id != null) { arr.push(`taker_id = ${req.query.taker_id}`) }
+      if(req.query.taker_name != null) { arr.push(`taker_name = "${req.query.taker_name}"`) }
+      if(req.query.icon != null) { arr.push(`icon = ${req.query.icon}`) }
+      if(req.query.picture != null) { arr.push(`picture = "${req.query.picture}"`) }
+      if(arr.length == 0){ res.write('error'); res.end(); return; }
+
+      for(let i = 0; i < arr.length; i++) {
+        arrStr += arr[i];
+        if( i != arr.length-1) {arrStr += ',';}
+      }
+
+      let queryString = `UPDATE coupon SET ${arrStr} WHERE coupon_id = ${coupon_id};`
+      connection.query(queryString, function(error,rows, fields) {
+        if(error) {console.log(error); res.write(error); res.end(); return;}
+        res.write(`1`);
+        res.end();
+      });
+      return;
+    },
+
+    //=====================================================================================================================================
+    //  ▶ delete_coupon
+    //=====================================================================================================================================
+    delete_coupon: function (req,res) {
+      let coupon_id = req.query.coupon_id
+      let queryString = `DELETE FROM coupon WHERE coupon_id = '${coupon_id}';`
+      if(coupon_id == null){ res.write('error'); res.end(); return; }
+      connection.query(queryString, function(error,rows, fields) {
+        res.writeHead(200,{'Content-Type':'text/plain;charset=utf-8'})
+        if(error) {console.log(error); res.write(error); res.end(); return;}
+        res.write(`1`); res.end(); return;
+      });
+      return;
+    },
+
+    //=====================================================================================================================================
+    //
+    //  WISH TABLE CRUD (Create, Read, Update, Delete)
+    //  @ 2022.04.18 KimYC1223
+    /*
+        +-------------------------+------------+------+-----+---------+----------------+
+        | Field                   | Type       | Null | Key | Default | Extra          |
+        +-------------------------+------------+------+-----+---------+----------------+
+        | wish_id                 | int(11)    | NO   | PRI | NULL    | auto_increment |
+        | couple_num              | int(11)    | YES  |     | NULL    |                |
+        | name                    | char(50)   | YES  |     | NULL    |                |
+        | creation_date           | date       | YES  |     | NULL    |                |
+        | is_issuance_immediately | tinyint(1) | NO   |     | NULL    |                |
+        | cost                    | text       | YES  |     | NULL    |                |
+        | reason                  | text       | YES  |     | NULL    |                |
+        | wish_state              | int(11)    | YES  |     | NULL    |                |
+        | is_dead_line            | tinyint(1) | NO   |     | NULL    |                |
+        | deadline                | date       | YES  |     | NULL    |                |
+        | author_id               | int(11)    | YES  |     | NULL    |                |
+        | author_name             | char(20)   | YES  |     | NULL    |                |
+        | taker_id                | int(11)    | YES  |     | NULL    |                |
+        | taker_name              | char(20)   | YES  |     | NULL    |                |
+        | icon                    | int(11)    | YES  |     | NULL    |                |
+        | picture                 | text       | YES  |     | NULL    |                |
+        +-------------------------+------------+------+-----+---------+----------------+
+    */
+    //
+    //=====================================================================================================================================
+    //  ▶ create_wish
+    //=====================================================================================================================================
+    create_wish: function (req,res) {
+      let couple_num = req.query.couple_num
+      let name = req.query.name
+      let creation_date = req.query.creation_date
+      let is_issuance_immediately = req.query.is_issuance_immediately
+      let cost = req.query.cost
+      let reason = req.query.reason
+      let wish_state = req.query.wish_state
+      let is_dead_line = req.query.is_dead_line
+      let deadline = req.query.deadline
+      let author_id = req.query.author_id
+      let author_name = req.query.author_name
+      let taker_id = req.query.taker_id
+      let taker_name = req.query.taker_name
+      let icon = req.query.icon
+      let picture = req.query.picture
+      let queryString = `INSERT INTO wish (couple_num,name,creation_date,is_issuance_immediately,cost,`
+              + `reason,wish_state,is_dead_line,deadline,author_id,author_name,taker_id,taker_name,icon,picture) `
+              + `VALUES (${couple_num},"${name}","${dateParse(creation_date)}",${is_issuance_immediately},${cost},`
+              + `"${reason}",${wish_state},${is_dead_line},"${dateParse(deadline)}",${author_id},`
+              + `"${author_name}",${taker_id},"${taker_name}",${icon},"${picture}");`
+      connection.query(queryString, function(error,rows, fields) {
+        if(error) {console.log(error); res.write(error); res.end(); return;}
+        connection.query(`SELECT wish_id FROM wish WHERE author_id = "${author_id}" AND ` +
+                         `taker_id = "${taker_id}";`, function(error2,rows2,fields2) {
+          if(error2) {console.log(error2); res.write(error2); res.end(); return;}
+          console.log(rows2[rows2.length - 1].id)
+          res.write(`${rows2[rows2.length - 1].id}`);
+          res.end();
+        })
+      });
+      return;
+    },
+
+    //=====================================================================================================================================
+    //  ▶ read_wish
+    //=====================================================================================================================================
+    read_wish: function (req,res) {
+      let id_num = req.query.id_num
+      if(id_num == null){ res.write('error'); res.end(); return; }
+      let queryString = `SELECT * FROM wish WHERE id_num = '${id_num}';`
+      connection.query(queryString, function(error,rows, fields) {
+        res.writeHead(200,{'Content-Type':'text/plain;charset=utf-8'})
+        if(rows.length == 0) { res.write('null'); res.end(); return; }
+        try{
+          let str = `{\n\t"wish" : [\n`
+          for(var i = 0; i < rows.length; i ++) {
+            str +=' {\n'
+            str += `\t"wish_id" : ${rows[i].id_num},\n`
+            str += `\t"coupon_num" : ${rows[i].coupon_num},\n`
+            str += `\t"name" : "${rows[i].name}",\n`
+            str += `\t"creation_date" : "${dateParse(rows[i].pw)}",\n`
+            str += `\t"is_issuance_immediately" : ${rows[i].is_issuance_immediately},\n`
+            str += `\t"cost" : ${rows[i].cost},\n`
+            str += `\t"reason" : "${rows[i].reason}",\n`
+            str += `\t"wish_state" : ${rows[i].wish_state},\n`
+            str += `\t"is_dead_line" : ${rows[i].is_dead_line},\n`
+            str += `\t"deadline" : "${rows[i].deadline}",\n`
+            str += `\t"author_id" : ${rows[i].author_id},\n`
+            str += `\t"author_name" : "${rows[i].author_name}",\n`
+            str += `\t"taker_id" : ${rows[i].taker_id},\n`
+            str += `\t"taker_name" : "${rows[i].taker_name}",\n`
+            str += `\t"icon" : ${rows[i].icon},\n`
+            str += `\t"picture" : "${rows[i].picture}"\n}`
+            if(i != (rows.length-1))
+              str += ', '
+          }
+          str += '\n\t]\n}'
+          res.write(str)
+        } catch (e) {res.write('null')}
+        res.end();
+      });
+      return;
+    },
+
+    //=====================================================================================================================================
+    //  ▶ update_wish
+    //=====================================================================================================================================
+    update_wish: function (req,res) {
+      let wish_id = req.query.wish_id
+      if(wish_id == null){ res.write('error'); res.end(); return; }
+      let arr = []
+      let arrStr = ``
+      if(req.query.couple_num != null) { arr.push(`couple_num = ${req.query.couple_num}`) }
+      if(req.query.name != null) { arr.push(`name = "${req.query.name}"`) }
+      if(req.query.creation_date != null) { arr.push(`creation_date = "${dateParse(req.query.creation_date)}"`) }
+      if(req.query.is_issuance_immediately != null) { arr.push(`is_issuance_immediately = ${req.query.is_issuance_immediately}`) }
+      if(req.query.cost != null) { arr.push(`cost = ${req.query.cost}`) }
+      if(req.query.reason != null) { arr.push(`reason = "${req.query.reason}"`) }
+      if(req.query.wish_state != null) { arr.push(`wish_state = ${req.query.wish_state}`) }
+      if(req.query.is_dead_line != null) { arr.push(`is_dead_line = ${req.query.is_dead_line}`) }
+      if(req.query.deadline != null) { arr.push(`deadline = "${dateParse(req.query.deadline)}"`) }
+      if(req.query.author_id != null) { arr.push(`author_id = ${req.query.author_id}`) }
+      if(req.query.author_name != null) { arr.push(`author_name = "${req.query.author_name}"`) }
+      if(req.query.taker_id != null) { arr.push(`taker_id = ${req.query.taker_id}`) }
+      if(req.query.taker_name != null) { arr.push(`taker_name = "${req.query.taker_name}"`) }
+      if(req.query.icon != null) { arr.push(`icon = ${req.query.icon}`) }
+      if(req.query.picture != null) { arr.push(`picture = "${req.query.picture}"`) }
+      if(arr.length == 0){ res.write('error'); res.end(); return; }
+
+      for(let i = 0; i < arr.length; i++) {
+        arrStr += arr[i];
+        if( i != arr.length-1) {arrStr += ',';}
+      }
+
+      let queryString = `UPDATE wish SET ${arrStr} WHERE id_num = ${id_num};`
+      connection.query(queryString, function(error,rows, fields) {
+        if(error) {console.log(error); res.write(error); res.end(); return;}
+        res.write(`1`); res.end();
+      });
+      return;
+    },
+
+    //=====================================================================================================================================
+    //  ▶ delete_wish
+    //=====================================================================================================================================
+    delete_wish: function (req,res) {
+      let wish_id = req.query.wish_id
+      let queryString = `DELETE FROM wish WHERE wish_id = '${wish_id}';`
+      if(wish_id == null){ res.write('error'); res.end(); return; }
       connection.query(queryString, function(error,rows, fields) {
         res.writeHead(200,{'Content-Type':'text/plain;charset=utf-8'})
         if(error) {console.log(error); res.write(error); res.end(); return;}
