@@ -1,0 +1,134 @@
+* {
+    margin: 0;
+    padding:0;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 400;
+}
+
+a {text-decoration: none; transition: 0.4s;}
+a:link { color:#ffa6c5;}
+a:visited { color:#ffa6c5;}
+a:hover { color:#68a4b6}
+a:active { color:#ffa6c5}
+
+
+body {
+    background:linear-gradient(90deg,#ffe0eb,#e0fdff);
+    width:100%;
+    height:100%;
+}
+
+.loginParentDiv {
+    transform : translate(-50%,-50%);
+    display: block;
+    position: relative;
+    left:50%;
+    right:50%;
+    width:400px;
+    height:630px;
+    background-color: white;
+    border-radius: 15px;
+    top:45vh;
+    text-align: center;
+    align-items: center;
+}
+
+.loginDiv {
+    text-align: center;
+    align-items: center;
+}
+
+.loginDiv img{
+    width: 70%;
+    display: block;
+    transform: translateX(-50%);
+    position: relative;
+    left:50%;
+    margin: 20px 0px;
+}
+
+.title {
+    text-transform: uppercase;
+    font-family: 'Pacifico', cursive;
+    color:#2e2e2e;
+    font-size: 30px;
+    line-height: 30px;
+    margin-bottom: 50px;
+    display: inline-block;
+}
+
+.inputDiv {
+    width: calc(100% - 60px);
+    margin-bottom: 10px;
+    padding :0px 30px;
+}
+
+.inputDiv span {
+    display: inline-block;
+    width: 100%;
+    text-align: left;
+    line-height: 20px;
+    font-size: 15px;
+    color: #2e2e2e;
+}
+
+.idDiv input, .passDiv input {
+    width: calc(100% - 40px);
+    text-align: left;
+    border:none;
+    outline: none;
+    padding : 10px 20px;
+    border-bottom: 1px solid #2e2e2e;
+    letter-spacing : 2px;
+    font-weight: 500;
+    background-color: white;
+    transition: 0.2s;
+}
+
+.idDiv input:focus {
+    background-color: #fff6f9;
+    border-bottom: 1px solid #ffa6c5;
+}
+
+.passDiv input:focus {
+    background-color: #f6ffff;
+    border-bottom: 1px solid #4d8b9e;
+}
+
+.loginInput {
+    width: calc(100% - 60px);
+    margin: 40px 30px;
+    background-color: #68a4b6;
+    height: 50px;
+    line-height: 50px;
+    font-weight: 500;
+    font-size: 20px;
+    border-radius: 10px;
+    color:white;
+    cursor:pointer;
+    transition: 0.5s;
+}
+
+.loginInput:hover {
+    background-color: #ffa6c5;
+}
+
+.sighUp, .forgotData {
+    font-weight: 400;
+    font-size: 12px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+
+.Footer {
+    height: 60px;
+    width: 100%;
+    text-align: center;
+    line-height: 60px;
+    position: fixed;
+    bottom:0px;
+    background-color: white;
+    font-size: 14px;
+    color:#707070;
+}

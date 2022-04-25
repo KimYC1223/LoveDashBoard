@@ -71,15 +71,14 @@ module.exports = (function() {
       let creation_date = req.query.creation_date
       let email = req.query.email
       let auth_num = Math.floor(Math.random() * 1001);
-      let title = req.query.title
       let queryString = 'INSERT INTO users (id,pw,name,gender,birth,creation_date,email,'
               + 'auth_num,is_auth,couple_num,couple_num,title) '
               + `VALUES ("${id}","${pw}","${name}","${gender}","${birth}","${creation_date}",`
               + `"${email}",${auth_num},0,-1,0);`
       connection.query(queryString, function(error,rows, fields) {
-        if(error) {console.log(error); res.write(error); res.end(); return;}
+        if(error) {console.log(error); res.write('error'); res.end(); return; }
         connection.query(`SELECT id_num FROM users WHERE id = "${id}";`, function(error2,rows2,fields2) {
-          if(error2) {console.log(error2); res.write(error2); res.end(); return;}
+          if(error2) {console.log(error2); res.write('error2'); res.end(); return;}
           console.log(rows2[rows2.length - 1].id)
           res.write(`${rows2[rows2.length - 1].id}`);
           res.end();
@@ -160,7 +159,7 @@ module.exports = (function() {
 
       let queryString = `UPDATE users SET ${arrStr} WHERE id_num = ${id_num};`
       connection.query(queryString, function(error,rows, fields) {
-        if(error) {console.log(error); res.write(error); res.end(); return;}
+        if(error) {console.log(error); res.write('error'); res.end(); return;}
         res.write(`1`);
         res.end();
       });
@@ -176,7 +175,7 @@ module.exports = (function() {
       if(id_num == null){ res.write('error'); res.end(); return; }
       connection.query(queryString, function(error,rows, fields) {
         res.writeHead(200,{'Content-Type':'text/plain;charset=utf-8'})
-        if(error) {console.log(error); res.write(error); res.end(); return;}
+        if(error) {console.log(error); res.write('error'); res.end(); return;}
         res.write(`1`); res.end(); return;
       });
       return;
@@ -206,9 +205,9 @@ module.exports = (function() {
       let queryString = 'INSERT INTO achievement (owner,creation_date)'
               + `VALUES ("${owner}","${creation_date}");`
       connection.query(queryString, function(error,rows, fields) {
-        if(error) {console.log(error); res.write(error); res.end(); return;}
+        if(error) {console.log(error); res.write('error'); res.end(); return;}
         connection.query(`SELECT achievement_num FROM achievement WHERE owner = "${owner}";`, function(error2,rows2,fields2) {
-          if(error2) {console.log(error2); res.write(error2); res.end(); return;}
+          if(error2) {console.log(error2); res.write('error2'); res.end(); return;}
           console.log(rows2[rows2.length - 1].id)
           res.write(`${rows2[rows2.length - 1].id}`);
           res.end();
@@ -264,7 +263,7 @@ module.exports = (function() {
 
       let queryString = `UPDATE achievement SET ${arrStr} WHERE id_num = ${id_num};`
       connection.query(queryString, function(error,rows, fields) {
-        if(error) {console.log(error); res.write(error); res.end(); return;}
+        if(error) {console.log(error); res.write('error'); res.end(); return;}
         res.write(`1`);
         res.end();
       });
@@ -280,7 +279,7 @@ module.exports = (function() {
       if(id_num == null){ res.write('error'); res.end(); return; }
       connection.query(queryString, function(error,rows, fields) {
         res.writeHead(200,{'Content-Type':'text/plain;charset=utf-8'})
-        if(error) {console.log(error); res.write(error); res.end(); return;}
+        if(error) {console.log(error); res.write('error'); res.end(); return;}
         res.write(`1`); res.end(); return;
       });
       return;
@@ -310,9 +309,9 @@ module.exports = (function() {
       let queryString = 'INSERT INTO title (owner,creation_date)'
               + `VALUES ("${owner}","${creation_date}");`
       connection.query(queryString, function(error,rows, fields) {
-        if(error) {console.log(error); res.write(error); res.end(); return;}
+        if(error) {console.log(error); res.write('error'); res.end(); return;}
         connection.query(`SELECT title_num FROM title WHERE owner = "${owner}";`, function(error2,rows2,fields2) {
-          if(error2) {console.log(error2); res.write(error2); res.end(); return;}
+          if(error2) {console.log(error2); res.write('error2'); res.end(); return;}
           console.log(rows2[rows2.length - 1].id)
           res.write(`${rows2[rows2.length - 1].id}`);
           res.end();
@@ -368,7 +367,7 @@ module.exports = (function() {
 
       let queryString = `UPDATE title SET ${arrStr} WHERE id_num = ${id_num};`
       connection.query(queryString, function(error,rows, fields) {
-        if(error) {console.log(error); res.write(error); res.end(); return;}
+        if(error) {console.log(error); res.write('error'); res.end(); return;}
         res.write(`1`);
         res.end();
       });
@@ -384,7 +383,7 @@ module.exports = (function() {
       if(id_num == null){ res.write('error'); res.end(); return; }
       connection.query(queryString, function(error,rows, fields) {
         res.writeHead(200,{'Content-Type':'text/plain;charset=utf-8'})
-        if(error) {console.log(error); res.write(error); res.end(); return;}
+        if(error) {console.log(error); res.write('error'); res.end(); return;}
         res.write(`1`); res.end(); return;
       });
       return;
@@ -433,10 +432,10 @@ module.exports = (function() {
               + `VALUES (${couple_num},"${name}","${reason}","${dateParse(creation_date)}",${author_id},"${author_name}",'`
               + `${taker_id},"${taker_name}",${icon},"${picture}"); `
       connection.query(queryString, function(error,rows, fields) {
-        if(error) {console.log(error); res.write(error); res.end(); return;}
+        if(error) {console.log(error); res.write('error'); res.end(); return;}
         connection.query(`SELECT coupon_id FROM coupon WHERE author_id = "${author_id}" AND ` +
                          `taker_id = "${taker_id}";`, function(error2,rows2,fields2) {
-          if(error2) {console.log(error2); res.write(error2); res.end(); return;}
+          if(error2) {console.log(error2); res.write('error2'); res.end(); return;}
           console.log(rows2[rows2.length - 1].id)
           res.write(`${rows2[rows2.length - 1].id}`);
           res.end();
@@ -508,7 +507,7 @@ module.exports = (function() {
 
       let queryString = `UPDATE coupon SET ${arrStr} WHERE coupon_id = ${coupon_id};`
       connection.query(queryString, function(error,rows, fields) {
-        if(error) {console.log(error); res.write(error); res.end(); return;}
+        if(error) {console.log(error); res.write('error'); res.end(); return;}
         res.write(`1`);
         res.end();
       });
@@ -524,7 +523,7 @@ module.exports = (function() {
       if(coupon_id == null){ res.write('error'); res.end(); return; }
       connection.query(queryString, function(error,rows, fields) {
         res.writeHead(200,{'Content-Type':'text/plain;charset=utf-8'})
-        if(error) {console.log(error); res.write(error); res.end(); return;}
+        if(error) {console.log(error); res.write('error'); res.end(); return;}
         res.write(`1`); res.end(); return;
       });
       return;
@@ -582,10 +581,10 @@ module.exports = (function() {
               + `"${reason}",${wish_state},${is_dead_line},"${dateParse(deadline)}",${author_id},`
               + `"${author_name}",${taker_id},"${taker_name}",${icon},"${picture}");`
       connection.query(queryString, function(error,rows, fields) {
-        if(error) {console.log(error); res.write(error); res.end(); return;}
+        if(error) {console.log(error); res.write('error'); res.end(); return;}
         connection.query(`SELECT wish_id FROM wish WHERE author_id = "${author_id}" AND ` +
                          `taker_id = "${taker_id}";`, function(error2,rows2,fields2) {
-          if(error2) {console.log(error2); res.write(error2); res.end(); return;}
+          if(error2) {console.log(error2); res.write('error2'); res.end(); return;}
           console.log(rows2[rows2.length - 1].id)
           res.write(`${rows2[rows2.length - 1].id}`);
           res.end();
@@ -667,7 +666,7 @@ module.exports = (function() {
 
       let queryString = `UPDATE wish SET ${arrStr} WHERE id_num = ${id_num};`
       connection.query(queryString, function(error,rows, fields) {
-        if(error) {console.log(error); res.write(error); res.end(); return;}
+        if(error) {console.log(error); res.write('error'); res.end(); return;}
         res.write(`1`); res.end();
       });
       return;
@@ -682,7 +681,7 @@ module.exports = (function() {
       if(wish_id == null){ res.write('error'); res.end(); return; }
       connection.query(queryString, function(error,rows, fields) {
         res.writeHead(200,{'Content-Type':'text/plain;charset=utf-8'})
-        if(error) {console.log(error); res.write(error); res.end(); return;}
+        if(error) {console.log(error); res.write('error'); res.end(); return;}
         res.write(`1`); res.end(); return;
       });
       return;
