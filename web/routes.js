@@ -7,7 +7,8 @@ module.exports = function (app) {
 
     app.get('/', (req,res) => { res.render(__dirname+'/HTML/index.html') })
     app.get('/login', (req,res) => { res.render(__dirname+'/HTML/login.html') })
-
+    app.get('/signUp', (req,res) => { res.render(__dirname+'/HTML/signUp.html') })
+    
     // users Table CRUD
     app.get('/create_users', (req,res) => { mysqlScript.create_users(req,res) })
     app.get('/read_users', (req,res) => { mysqlScript.read_users(req,res) })

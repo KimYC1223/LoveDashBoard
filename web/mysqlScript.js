@@ -2,7 +2,7 @@ var mysql       = require('mysql')
 let queryString = require('querystring')
 let fs          = require('fs')
 
-let dbpw        = fs.readFileSync('dbpw.txt','utf8')
+let dbpw        = fs.readFileSync('/home/keti/private/LoveDashBoard/web/dbpw.txt','utf8')
 
 var connection  = mysql.createConnection({
   host     : 'localhost',
